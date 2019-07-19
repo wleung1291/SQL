@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+
+def login
+  puts 'Input your email: '
+  print '> '
+  email = gets.chomp
+
+  user = User.find_by(email: email)
+
+  if user.nil?
+    raise 'That user does not exist'
+  end
+
+  user
+end
+
+def choose_option
+  puts 'What do you want to do?'
+  puts '0. Create shortened URL'
+  puts '1. Visit shortened URL'
+  print '> '
+  input = gets.chomp
+  return input
+end
+
+def create_shortened_url(user)
+  puts 'Type in your long url: '
+  print '> '
+  long_url = gets.chomp
+  short = ShortenedUrl.new_short_url(user, long_url)
+
+  puts "Short url is: #{short.short_url}"
+  puts 'Goodbye!'
+end
+
+def visit_shortened_url(user)
+  puts 'Type in the shortened URL: '
+  print '> '
+  short = gets.chomp
+  url = ShortenedUrl.find_by(short_url: short)
+  
+  if url.nil?
+    raise 'That url does not exist' 
+  end
+
+  puts "Launching #{url.long_url} ..."
+  puts 'Goodbye!'
+
+  Visit.record_visit!(user, url)
+  Launchy.open(url.long_url)
+end
+
+def run
+  user = login()
+  option = choose_option()
+
+  if option == '0'
+    create_shortened_url(user)
+  elsif option == '1'
+    visit_shortened_url(user)
+  end
+end
+
+run
+
+# To run this Command Line Interface:
+# $ rails runner bin/cli

@@ -1,0 +1,39 @@
+/* PUT FLUID GRID CODE HERE */
+
+.col{
+  float: left;
+  box-sizing: border-box;
+}
+
+/* Attribute selector targeting all elements
+with a class attribute containing 'col-' */
+ [class*='col-'] {
+  padding-right: 20px;
+}
+[class*='col-']:last-of-type {
+  padding-right: 0;
+}
+
+
+.col-1 {
+  background: red;
+  width: 33%;
+}
+
+.col-2{
+  background:yellow;
+  width: 67%;
+}
+
+.clear-fix:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* repositions elements when resizing window */
+@media all and (max-width: 900px) {
+  [class*='col-'] {
+    width: 100%;
+  }
+}
